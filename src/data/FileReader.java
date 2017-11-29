@@ -46,7 +46,7 @@ public class FileReader {
 		mainFile = new File(path);
 		PrintWriter printer = new PrintWriter(new FileOutputStream(mainFile));
 		while(fileLines.size()>0) {
-			fileLines
+			printer.println(fileLines.remove(0));
 		}
 	}
 }
