@@ -19,34 +19,59 @@ public class FileReader {
 		this.path = path;
 	}
 
+	/**
+	 * Saves medication to the list as "time:name:dose"
+	 * 
+	 * @param time
+	 * @param name
+	 * @param dose
+	 * @throws IOException
+	 */
 	public void saveToFile(int time, String name, int dose) throws IOException {
 		PrintWriter printer = new PrintWriter(new FileOutputStream(mainFile));
 		printer.println(time + ":" + name + ":" + dose);
 		printer.close();
 	}
 
+	/**
+	 * Used to sort the list of medication.
+	 * 
+	 * @throws FileNotFoundException
+	 *             - mainFile doesn't have a valid path
+	 */
 	public void sort() throws FileNotFoundException {
 		Scanner reader = new Scanner(mainFile);
 		String x = "";
 		while (reader.hasNext()) {
 			x = x + reader.next();
 		}
+		reader.close();
 	}
 
+	/**
+	 * This method is used to delete medication from the list.
+	 * 
+	 * @param del
+	 *            - The String that is checked for what to destroy
+	 * @throws FileNotFoundException
+	 *             - mainFile doesn't have a path
+	 */
 	public void deleteFromFile(String del) throws FileNotFoundException {
 		Scanner reader = new Scanner(mainFile);
 		List<String> fileLines = new ArrayList<String>();
 		String x;
-		while(reader.hasNextLine()) {
+		while (reader.hasNextLine()) {
 			x = reader.nextLine();
-			if(!x.equals(del));
-			fileLines.add(x);
+			if (!x.equals(del))
+				fileLines.add(x);
 		}
+		reader.close();
 		mainFile.delete();
 		mainFile = new File(path);
 		PrintWriter printer = new PrintWriter(new FileOutputStream(mainFile));
-		while(fileLines.size()>0) {
+		while (fileLines.size() > 0) {
 			printer.println(fileLines.remove(0));
 		}
+		printer.close();
 	}
 }
