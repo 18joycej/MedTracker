@@ -53,12 +53,13 @@ public class FileReader {
 	public void sortTime() throws FileNotFoundException {
 		Scanner reader = new Scanner(mainFile);
 		BinarySearchTree<String> x = new BinarySearchTree<String>();
-		
+		reader.close();
 	}
 
 	public void sortType() throws FileNotFoundException {
 		Scanner reader = new Scanner(mainFile);
 		BinarySearchTree<String> x = new BinarySearchTree<String>();
+		reader.close();
 	}
 
 	/**
