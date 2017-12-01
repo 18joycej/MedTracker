@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import support.BinarySearchTree;
+
 public class FileReader {
 
 	private File mainFile;
@@ -39,13 +41,23 @@ public class FileReader {
 	 * @throws FileNotFoundException
 	 *             - mainFile doesn't have a valid path
 	 */
-	public void sort() throws FileNotFoundException {
+	public void sortAlphabetical() throws FileNotFoundException {
 		Scanner reader = new Scanner(mainFile);
-		String x = "";
-		while (reader.hasNext()) {
-			x = x + reader.next();
+		BinarySearchTree<String> x = new BinarySearchTree<String>();
+		while (reader.hasNextLine()) {
+			x.add(reader.nextLine());
 		}
 		reader.close();
+	}
+
+	public void sortTime() throws FileNotFoundException {
+		Scanner reader = new Scanner(mainFile);
+		BinarySearchTree<String> x = new BinarySearchTree<String>();
+		
+	}
+
+	public void sortType() throws FileNotFoundException {
+
 	}
 
 	/**
