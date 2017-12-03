@@ -1,10 +1,18 @@
 package core;
 
-public class Driver {
+import javafx.application.Application;
+import javafx.stage.Stage;
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+public class Driver extends Application {
 
+	protected Stage window;
+	public boolean running;
+
+	public void start(Stage x) {
+		window = x;
+		window.setTitle("Medicine Tracker");
+		window.set
+		running = true;
 	}
 
 }
