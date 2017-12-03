@@ -114,7 +114,11 @@ public class BinarySearchTree<T extends Comparable<T>>
   {
     return recGet(element, root);
   }
-
+  public T getName(String name)
+  //Precondition: getName is being used on a Binary Search Tree of medications
+  {
+	  
+  }
   private BSTNode<T> recAdd(T element, BSTNode<T> tree)
   // Adds element to tree; tree retains its BST property.
   {
