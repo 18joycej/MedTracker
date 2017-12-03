@@ -5,10 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
+import ch05.queues.LinkedUnbndQueue;
 import support.BinarySearchTree;
 
 public class FileReader {
@@ -29,7 +28,7 @@ public class FileReader {
 	 * @param dose
 	 * @throws IOException
 	 */
-	public void saveToFile(int time, String name, int dose) throws IOException {
+	public void saveToFile(String time, String name, int dose) throws IOException {
 		PrintWriter printer = new PrintWriter(new FileOutputStream(mainFile));
 		printer.println(time + ":" + name + ":" + dose);
 		printer.close();
@@ -72,19 +71,19 @@ public class FileReader {
 	 */
 	public void deleteFromFile(String del) throws FileNotFoundException {
 		Scanner reader = new Scanner(mainFile);
-		List<String> fileLines = new ArrayList<String>();
+		LinkedUnbndQueue<String> fileLines = new LinkedUnbndQueue<String>();
 		String x;
 		while (reader.hasNextLine()) {
 			x = reader.nextLine();
 			if (!x.equals(del))
-				fileLines.add(x);
+				fileLines.enqueue(x);
 		}
 		reader.close();
 		mainFile.delete();
 		mainFile = new File(path);
 		PrintWriter printer = new PrintWriter(new FileOutputStream(mainFile));
-		while (fileLines.size() > 0) {
-			printer.println(fileLines.remove(0));
+		while (!fileLines.isEmpty()) {
+			printer.println(fileLines.dequeue());
 		}
 		printer.close();
 	}
