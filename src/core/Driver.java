@@ -9,12 +9,15 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import display.GUI;
+
 public class Driver extends Application {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		launch(args);
+		Driver.launch(args);
 	}
+
 	public void start(Stage mainStage) {
 		mainStage.setTitle("Medicine Tracker");
 		Button enter = new Button();
@@ -22,7 +25,7 @@ public class Driver extends Application {
 		enter.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				System.out.println("Start!");
+				GUI.pageOne(mainStage);
 			}
 		});
 		Pane root = new Pane();
