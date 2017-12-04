@@ -31,4 +31,13 @@ private int[] multipleTimes;
 		if(dateSetting==2) selectDays=xDays.split(";");
 		if(dateSetting==3) dayInterval=Integer.parseInt(xDays);
 	}
+	public String getName() {
+		return name;
+	}
+	public String getDoseage() {
+		return doseage;
+	}
+	public int getUrgency() {
+		return urgencyState;
+	}
 }
