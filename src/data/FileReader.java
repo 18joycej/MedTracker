@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 import ch05.queues.LinkedUnbndQueue;
 import support.BinarySearchTree;
-
+import support.Medication;
 public class FileReader {
 
 	private File mainFile;
@@ -28,10 +28,27 @@ public class FileReader {
 	 * @param dose
 	 * @throws IOException
 	 */
-	public void saveToFile(String time, String name, int dose) throws IOException {
+	public void saveToFile(Medication med) throws IOException {
 		PrintWriter printer = new PrintWriter(new FileOutputStream(mainFile));
-		printer.println(time + ":" + name + ":" + dose);
-		printer.close();
+		String temp=med.getName()+"$"+med.getDoseage()+"$"+med.getUrgency()+"$"+med.getTimeSetting()+"$"+med.getDateSetting();
+		if(med.getTimeSetting()==1) {
+			temp=temp+"$"+med.getSpecificTime();
+		}
+		else if(med.getTimeSetting()==2) {
+			int[] temp2=med.getMultipleTimes();
+			for(int i=0;i<temp2.length;i++) {
+				temp=temp+"$"+temp2[i];
+			}
+		}
+		if(med.getDateSetting()==1) {
+			temp=temp+"$"+med.getDayInterval();
+		}
+		else if(med.getDateSetting()==2) {
+			int[] temp2=med.getSelectDays();
+			for(int i=0;i<temp2.length;i++) {
+				temp=temp+"$"+temp2[i];
+			}
+		}
 	}
 
 	/**

@@ -4,10 +4,10 @@ public class Medication {
 private String name;
 private String doseage;
 private int urgencyState; //1: Low, 2: Medium, 3: High,
-private int timeSetting; //1: Specific time, 2: Multiple times, 3: Time intervals
-private int dateSetting; //1: Daily, 2: Specific days of week, 3: Day Intervals, 4: Time intervals
-private String[] selectDays;
-private int dayInterval;
+private int timeSetting; //1: Specific time, 2: Multiple times
+private int dateSetting; //1: Daily, 2: Specific days of week
+private int[] selectDays;
+private boolean daily;
 private int specificTime;
 private int timeIntervals;
 private int[] multipleTimes;
@@ -26,10 +26,14 @@ private int[] multipleTimes;
 				multipleTimes[i]=Integer.parseInt(temp[i]);
 			}
 		}
-		if(timeSetting==3) timeIntervals=Integer.parseInt(xTimes);
-		if(dateSetting==1) dayInterval=1;
-		if(dateSetting==2) selectDays=xDays.split(";");
-		if(dateSetting==3) dayInterval=Integer.parseInt(xDays);
+		if(dateSetting==1) daily=true;
+		if(dateSetting==2) {
+			String[] temp=xDays.split(";");
+			selectDays=new int[temp.length];
+			for(int i=0;i<selectDays.length;i++) {
+				selectDays[i]=Integer.parseInt(temp[i]);
+			}
+		}
 	}
 	public String getName() {
 		return name;
@@ -46,11 +50,11 @@ private int[] multipleTimes;
 	public int getDateSetting() {
 		return dateSetting;
 	}
-	public String[] getSelectDays() {
+	public int[] getSelectDays() {
 		return selectDays;
 	}
-	public int getDayInterval() {
-		return dayInterval;
+	public boolean getDayInterval() {
+		return daily;
 	}
 	public int getSpecificTime() {
 		return specificTime;
