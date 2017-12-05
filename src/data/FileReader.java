@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Scanner;
 
 import ch05.queues.LinkedUnbndQueue;
@@ -49,6 +50,13 @@ public class FileReader {
 				temp=temp+"$"+temp2[i];
 			}
 		}
+	}
+	public void readFromFile(List<String> x) throws IOException {
+		Scanner reader = new Scanner(mainFile);
+		while(reader.hasNextLine()) {
+			x.add(reader.nextLine());
+		}
+		reader.close();
 	}
 
 	/**

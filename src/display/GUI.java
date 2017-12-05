@@ -1,12 +1,16 @@
 package display;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import data.FileReader;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
@@ -58,10 +62,19 @@ public class GUI {
 		t.setFont(new Font(20));
 		Rectangle rec = new Rectangle(0, 0, 500, 80);
 		AnchorPane root = new AnchorPane(rec);
+		List<String> medList = new ArrayList<String>();
+	/**	try {
+	 	**	filer.readFromFile(medList);
+	**	} catch (IOException e1) {
+		**	// TODO Auto-generated catch block
+	**		e1.printStackTrace();
+		}*/
+		//ListView<String> graphList = new ListView<String>((ObservableList<String>) medList);
 		ScrollPane list = new ScrollPane();
 		list.setLayoutY(80);
 		list.setVbarPolicy(ScrollBarPolicy.ALWAYS);
 		list.setPrefSize(500, 250);
+		//list.setContent(graphList);
 		rec.setFill(Color.ORANGERED);
 		root.getChildren().add(print);
 		root.getChildren().add(add);
