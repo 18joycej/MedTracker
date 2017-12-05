@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 public class GUI {
 
 	private static String path;
-	private FileReader filer;
+	private static FileReader filer;
 	
 	public static void setPath() {
 		filer = new FileReader(path);
@@ -119,7 +119,7 @@ public class GUI {
 		save.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				FileReader(path);
+				filer.saveToFile();
 			}
 		});
 		Rectangle rec = new Rectangle(0, 0, 500, 80);
