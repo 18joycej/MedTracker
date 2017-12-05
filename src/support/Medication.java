@@ -40,4 +40,25 @@ private int[] multipleTimes;
 	public int getUrgency() {
 		return urgencyState;
 	}
+	public int getTimeSetting() {
+		return timeSetting;
+	}
+	public int getDateSetting() {
+		return dateSetting;
+	}
+	public String[] getSelectDays() {
+		return selectDays;
+	}
+	public int getDayInterval() {
+		return dayInterval;
+	}
+	public int getSpecificTime() {
+		return specificTime;
+	}
+	public int getTimeIntervals() {
+		return timeIntervals;
+	}
+	public int[] getMultipleTimes() {
+		return multipleTimes;
+	}
 }
