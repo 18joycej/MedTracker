@@ -91,6 +91,11 @@ public class GUI {
 
 	public static void printable(Stage xStage) {
 		Button back = new Button();
+		Text t = new Text();
+		t.setText("Printable");
+		t.setFont(new Font(20));
+		t.setLayoutX(200);
+		t.setLayoutY(45);
 		back.setText("Back");
 		back.setLayoutX(20);
 		back.setLayoutY(20);
@@ -104,6 +109,7 @@ public class GUI {
 		AnchorPane root = new AnchorPane(rec);
 		rec.setFill(Color.ORANGERED);
 		root.getChildren().add(back);
+		root.getChildren().add(t);
 		xStage.setScene(new Scene(root, 500, 350));
 		xStage.show();
 	}
@@ -236,13 +242,30 @@ public class GUI {
 
 	public static void addExercisePage(Stage xStage) {
 		Text t = new Text();
-		t.setLayoutX(200);
+		t.setLayoutX(180);
 		t.setLayoutY(45);
 		t.setFont(new Font(20));
-		t.setText("Add Medication");
+		t.setText("Add Exercise");
 		TextField field = new TextField();
 		field.setLayoutX(20);
-		field.setLayoutY(100);
+		field.setLayoutY(140);
+		field.setText("Type in an exercise");
+		TextField urgency = new TextField();
+		urgency.setLayoutX(20);
+		urgency.setLayoutY(170);
+		urgency.setText("Type in the urgency as a number");
+		TextField timing = new TextField();
+		timing.setLayoutX(340);
+		timing.setLayoutY(140);
+		timing.setText("Enter the time for the exercise");
+		TextField reps = new TextField();
+		reps.setLayoutX(340);
+		reps.setLayoutY(170);
+		reps.setText("Enter the number of reps");
+		TextField days = new TextField();
+		days.setLayoutX(340);
+		days.setLayoutY(200);
+		days.setText("Enter the days separated by ;");
 		Button save = new Button();
 		save.setText("Save");
 		save.setLayoutX(440);
@@ -311,16 +334,22 @@ public class GUI {
 		root.getChildren().add(exercise);
 		root.getChildren().add(reading);
 		root.getChildren().add(other);
+		root.getChildren().add(t);
+		root.getChildren().add(field);
+		root.getChildren().add(urgency);
+		root.getChildren().add(timing);
+		root.getChildren().add(reps);
+		root.getChildren().add(days);
 		xStage.setScene(new Scene(root, 500, 350));
 		xStage.show();
 	}
 
 	public static void addReadingPage(Stage xStage) {
 		Text t = new Text();
-		t.setLayoutX(200);
+		t.setLayoutX(180);
 		t.setLayoutY(45);
 		t.setFont(new Font(20));
-		t.setText("Add Medication");
+		t.setText("Add Reading");
 		TextField field = new TextField();
 		field.setLayoutX(20);
 		field.setLayoutY(100);
@@ -392,16 +421,17 @@ public class GUI {
 		root.getChildren().add(exercise);
 		root.getChildren().add(reading);
 		root.getChildren().add(other);
+		root.getChildren().add(t);
 		xStage.setScene(new Scene(root, 500, 350));
 		xStage.show();
 	}
 
 	public static void addOtherPage(Stage xStage) {
 		Text t = new Text();
-		t.setLayoutX(200);
+		t.setLayoutX(180);
 		t.setLayoutY(45);
 		t.setFont(new Font(20));
-		t.setText("Add Medication");
+		t.setText("Add Other");
 		TextField field = new TextField();
 		field.setLayoutX(20);
 		field.setLayoutY(100);
@@ -473,6 +503,7 @@ public class GUI {
 		root.getChildren().add(exercise);
 		root.getChildren().add(reading);
 		root.getChildren().add(other);
+		root.getChildren().add(t);
 		xStage.setScene(new Scene(root, 500, 350));
 		xStage.show();
 	}

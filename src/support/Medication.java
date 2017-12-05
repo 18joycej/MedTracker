@@ -19,7 +19,6 @@ private int[] multipleTimes;
 		timeSetting=xTimeSetting;
 		dateSetting=xDateSetting;
 		//*************************
-		String[] tempString = xTimes.split(";");
 		if(timeSetting==1) specificTime=Integer.parseInt(xTimes);
 		if(timeSetting==2) {
 			String[] temp=xTimes.split(";");
