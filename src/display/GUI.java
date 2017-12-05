@@ -1,9 +1,13 @@
 package display;
 
+import data.FileReader;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -13,6 +17,16 @@ import javafx.stage.Stage;
 
 public class GUI {
 
+	private static String path;
+	private FileReader filer;
+	
+	public static void setPath() {
+		filer = new FileReader(path);
+	}
+	public static void setPath(String xPath) {
+		path = xPath;
+		filer = new FileReader(path);
+	}
 	public static void home(Stage xStage) {
 		xStage.setTitle("Medicine Tracker");
 		Button print = new Button();
@@ -22,7 +36,7 @@ public class GUI {
 		print.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				System.out.println("Printing...");
+				GUI.printable(xStage);
 			}
 		});
 		Button add = new Button();
@@ -41,49 +55,82 @@ public class GUI {
 		t.setFont(new Font(20));
 		Rectangle rec = new Rectangle(0, 0, 500, 80);
 		AnchorPane root = new AnchorPane(rec);
+		ScrollPane list = new ScrollPane();
+		list.setLayoutY(80);
+		list.setVbarPolicy(ScrollBarPolicy.ALWAYS);
+		list.setPrefSize(500, 250);
 		rec.setFill(Color.ORANGERED);
 		root.getChildren().add(print);
 		root.getChildren().add(add);
 		root.getChildren().add(t);
+		root.getChildren().add(list);
 		xStage.setScene(new Scene(root, 500, 350));
 	}
 
-	public static void pageTwo(Stage xStage) {
-		xStage.setTitle("Medicine Tracker");
-		xStage.setResizable(false);
-		Button enter = new Button();
-		enter.setText("Start");
-		enter.setOnAction(new EventHandler<ActionEvent>() {
+	public static void readingLog(Stage xStage) {
+		Button back = new Button();
+		back.setText("Back");
+		back.setLayoutX(20);
+		back.setLayoutY(20);
+		back.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				System.out.println("Start!");
+				GUI.home(xStage);
 			}
 		});
 		Rectangle rec = new Rectangle(0, 0, 500, 80);
 		AnchorPane root = new AnchorPane(rec);
 		rec.setFill(Color.ORANGERED);
-		root.getChildren().add(enter);
+		root.getChildren().add(back);
 		xStage.setScene(new Scene(root, 500, 350));
 		xStage.show();
 	}
-	
-	public static void pageThree(Stage xStage) {
-		Button enter = new Button();
-		enter.setText("Start");
-		enter.setOnAction(new EventHandler<ActionEvent>() {
+
+	public static void printable(Stage xStage) {
+		Button back = new Button();
+		back.setText("Back");
+		back.setLayoutX(20);
+		back.setLayoutY(20);
+		back.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				System.out.println("Start!");
+				GUI.home(xStage);
 			}
 		});
 		Rectangle rec = new Rectangle(0, 0, 500, 80);
 		AnchorPane root = new AnchorPane(rec);
 		rec.setFill(Color.ORANGERED);
-		root.getChildren().add(enter);
+		root.getChildren().add(back);
 		xStage.setScene(new Scene(root, 500, 350));
 		xStage.show();
 	}
+
 	public static void addMedPage(Stage xStage) {
+		Text t = new Text();
+		t.setLayoutX(200);
+		t.setLayoutY(45);
+		t.setFont(new Font(20));
+		t.setText("Add Medication");
+		TextField field = new TextField();
+		field.setLayoutX();
+		field.setLayoutY();
+		Button save = new Button();
+		save.setText("Start");
+		save.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				FileReader(path);
+			}
+		});
+		Rectangle rec = new Rectangle(0, 0, 500, 80);
+		AnchorPane root = new AnchorPane(rec);
+		rec.setFill(Color.ORANGERED);
+		root.getChildren().add(enter);
+		xStage.setScene(new Scene(root, 500, 350));
+		xStage.show();
+	}
+
+	public static void addExercisePage(Stage xStage) {
 		Button enter = new Button();
 		enter.setText("Start");
 		enter.setOnAction(new EventHandler<ActionEvent>() {
@@ -99,7 +146,8 @@ public class GUI {
 		xStage.setScene(new Scene(root, 500, 350));
 		xStage.show();
 	}
-	public static void pageFive(Stage xStage) {
+
+	public static void addReadingPage(Stage xStage) {
 		Button enter = new Button();
 		enter.setText("Start");
 		enter.setOnAction(new EventHandler<ActionEvent>() {
@@ -115,23 +163,8 @@ public class GUI {
 		xStage.setScene(new Scene(root, 500, 350));
 		xStage.show();
 	}
-	public static void pageSix(Stage xStage) {
-		Button enter = new Button();
-		enter.setText("Start");
-		enter.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				System.out.println("Start!");
-			}
-		});
-		Rectangle rec = new Rectangle(0, 0, 500, 80);
-		AnchorPane root = new AnchorPane(rec);
-		rec.setFill(Color.ORANGERED);
-		root.getChildren().add(enter);
-		xStage.setScene(new Scene(root, 500, 350));
-		xStage.show();
-	}
-	public static void pageSeven(Stage xStage) {
+
+	public static void addOtherPage(Stage xStage) {
 		Button enter = new Button();
 		enter.setText("Start");
 		enter.setOnAction(new EventHandler<ActionEvent>() {
