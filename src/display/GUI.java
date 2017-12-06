@@ -24,7 +24,7 @@ import support.Medication;
 
 public class GUI {
 
-	private static String path = "\files";
+	private static String path = "test.txt";
 	private static FileReader filer;
 	
 	public static void setPath() {
@@ -172,11 +172,16 @@ public class GUI {
 				String dose = doset.getText();
 				int urgency = Integer.parseInt(urgent.getText());
 				int timeSetting = Integer.parseInt(times.getText());
-				int dateSetting = Integer.parseInt(days.getText());
+				int dateSetting = Integer.parseInt(dates.getText());
 				String dayz = days.getText();
 				String time = timet.getText();
 				try {
-					filer.saveToFile(new Medication(name, dose, urgency, timeSetting, dateSetting, dayz, time));
+					if(dateSetting==2){
+					filer.saveToFile(new Medication(name, dose, urgency, timeSetting, dateSetting, days.getText(), time));
+					}
+					else if(dateSetting==1) {
+					filer.saveToFile(new Medication(name, dose, urgency, timeSetting, dateSetting, "1", time));
+					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
