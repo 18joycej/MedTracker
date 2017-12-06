@@ -19,6 +19,12 @@ public class FileReader {
 	public FileReader(String path) {
 		this.path = path;
 		mainFile = new File(path);
+		try {
+			mainFile.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -54,7 +60,7 @@ public class FileReader {
 	public LinkedUnbndQueue<String> readFromFile() throws IOException {
 		Scanner reader = new Scanner(mainFile);
 		LinkedUnbndQueue<String> fileLines = new LinkedUnbndQueue<String>();
-		while(reader.hasNextLine()) {
+		while(reader.hasNext()) {
 			fileLines.enqueue(reader.nextLine());
 		}
 		reader.close();

@@ -1,8 +1,7 @@
 package display;
 
+import java.awt.Checkbox;
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
@@ -25,7 +25,7 @@ import support.Medication;
 
 public class GUI {
 
-	private static String path = "C:/temp/files/test.txt";
+	private static String path = "src/data/info.txt";
 	private static FileReader filer;
 	
 	public static void setPath() {
@@ -66,7 +66,7 @@ public class GUI {
 		LinkedUnbndQueue<String> medList;
 		List<String> medicalList = new ArrayList<String>();
 		try {
-			medList = filer.readFromFile();
+			filer.readFromFile();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 		e1.printStackTrace();
@@ -120,7 +120,7 @@ public class GUI {
 				GUI.home(xStage);
 			}
 		});
-		Rectangle rec = new Rectangle(0, 0, 500, 80);
+		Rectangle rec = new Rectangle(0, 0, 500, 60);
 		AnchorPane root = new AnchorPane(rec);
 		Text morning = new Text("Morning");
 		morning.setLayoutX(40);
@@ -146,6 +146,18 @@ public class GUI {
 		Text amount2 = new Text(410, 90, "Amount");
 		Text amount3= new Text(160, 230, "Amount");
 		Text amount4 = new Text(410, 230, "Amount");
+		CheckBox check1 = new CheckBox();
+		check1.setLayoutX(230);
+		check1.setLayoutY(90);
+		CheckBox check2 = new CheckBox();
+		check2.setLayoutX(480);
+		check2.setLayoutY(90);
+		CheckBox check3 = new CheckBox();
+		check3.setLayoutX(230);
+		check3.setLayoutY(230);
+		CheckBox check4 = new CheckBox();
+		check4.setLayoutX(480);
+		check4.setLayoutY(230);
 		rec.setFill(Color.ORANGERED);
 		root.getChildren().add(back);
 		root.getChildren().add(t);
@@ -165,6 +177,10 @@ public class GUI {
 		root.getChildren().add(amount2);
 		root.getChildren().add(amount3);
 		root.getChildren().add(amount4);
+		root.getChildren().add(check1);
+		root.getChildren().add(check2);
+		root.getChildren().add(check3);
+		root.getChildren().add(check4);
 		xStage.setScene(new Scene(root, 500, 350));
 		xStage.show();
 	}
