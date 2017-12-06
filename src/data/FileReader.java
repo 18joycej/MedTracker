@@ -19,11 +19,14 @@ public class FileReader {
 	public FileReader(String path) {
 		this.path = path;
 		mainFile = new File(path);
-		try {
-			mainFile.createNewFile();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		System.out.println(path);
+		if(!mainFile.exists()) {
+			try {
+				mainFile.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -57,7 +60,8 @@ public class FileReader {
 			}
 		}
 	}
-	public LinkedUnbndQueue<String> readFromFile() throws IOException {
+	public LinkedUnbndQueue<String> readFromFile() throws FileNotFoundException {
+		File readFile = new File(path);
 		Scanner reader = new Scanner(mainFile);
 		LinkedUnbndQueue<String> fileLines = new LinkedUnbndQueue<String>();
 		while(reader.hasNext()) {

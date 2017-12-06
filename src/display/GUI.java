@@ -25,7 +25,7 @@ import support.Medication;
 
 public class GUI {
 
-	private static String path = "src/data/info.txt";
+	private static String path = "src\\data\\info.txt";
 	private static FileReader filer;
 	
 	public static void setPath() {
