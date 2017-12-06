@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
+import java.nio.file.Path;
 import java.util.Scanner;
 
 import ch05.queues.LinkedUnbndQueue;
@@ -17,8 +17,8 @@ public class FileReader {
 	private String path;
 
 	public FileReader(String path) {
-		mainFile = new File(path);
 		this.path = path;
+		mainFile = new File(path);
 	}
 
 	/**
@@ -51,12 +51,14 @@ public class FileReader {
 			}
 		}
 	}
-	public void readFromFile(List<String> x) throws IOException {
+	public LinkedUnbndQueue<String> readFromFile() throws IOException {
 		Scanner reader = new Scanner(mainFile);
+		LinkedUnbndQueue<String> fileLines = new LinkedUnbndQueue<String>();
 		while(reader.hasNextLine()) {
-			x.add(reader.nextLine());
+			fileLines.enqueue(reader.nextLine());
 		}
 		reader.close();
+		return fileLines;
 	}
 
 	/**
