@@ -12,7 +12,7 @@ private int specificTime;
 private int timeIntervals;
 private int[] multipleTimes;
 	public Medication(String xName, String xDoseage, int xUrgency, int xTimeSetting, int xDateSetting,
-	String xDays, String xTimes) {
+	String xTimes, String xDays) {
 		name=xName;
 		doseage=xDoseage;
 		urgencyState=xUrgency;
@@ -21,7 +21,7 @@ private int[] multipleTimes;
 		//*************************
 		if(timeSetting==1) specificTime=Integer.parseInt(xTimes);
 		if(timeSetting==2) {
-			String[] temp=xTimes.split(";");
+			String[] temp=xTimes.split("\\;");
 			multipleTimes=new int[temp.length];
 			for(int i=0;i<multipleTimes.length;i++) {
 				multipleTimes[i]=Integer.parseInt(temp[i]);
@@ -67,11 +67,11 @@ private int[] multipleTimes;
 		return multipleTimes;
 	}
 	public String toString() {
-		String temp=""+specificTime/100+":"+(specificTime-(specificTime/100))+"    "+name+"    "+doseage;
+		String temp=""+specificTime/60+":"+(specificTime%60)+"    "+name+"    "+doseage;
 		return temp;
 	}
 	public String toString(int referenceNum) {
-		String temp=""+multipleTimes[referenceNum]/100+":"+(multipleTimes[referenceNum]-(multipleTimes[referenceNum]/100))+"    "+name+"    "+doseage;
+		String temp=""+multipleTimes[referenceNum]/60+":"+(multipleTimes[referenceNum]%60)+"    "+name+"    "+doseage;
 		return temp;
 	}
 }
