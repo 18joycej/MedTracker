@@ -66,4 +66,12 @@ private int[] multipleTimes;
 	public int[] getMultipleTimes() {
 		return multipleTimes;
 	}
+	public String toString() {
+		String temp=""+specificTime/100+":"+(specificTime-(specificTime/100))+"    "+name+"    "+doseage;
+		return temp;
+	}
+	public String toString(int referenceNum) {
+		String temp=""+multipleTimes[referenceNum]/100+":"+(multipleTimes[referenceNum]-(multipleTimes[referenceNum]/100))+"    "+name+"    "+doseage;
+		return temp;
+	}
 }

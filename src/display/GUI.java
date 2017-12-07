@@ -2,6 +2,7 @@ package display;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import ch05.queues.LinkedUnbndQueue;
@@ -24,7 +25,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import support.Medication;
-
+import ch05.queues.*;
 public class GUI {
 
 	private static String path = "src\\data\\info.txt";
@@ -67,9 +68,25 @@ public class GUI {
 		Rectangle rec = new Rectangle(0, 0, 500, 80);
 		AnchorPane root = new AnchorPane(rec);
 		LinkedUnbndQueue<String> medsRaw = null;
+		Calendar today= Calendar.getInstance();
 		try {
-			filer.sortTime();
 			medsRaw=filer.readFromFile();
+			ArrayList<LinkedUnbndQueue<Medication>> medsFixed = new ArrayList<LinkedUnbndQueue<Medication>>(1440);
+			for(int i=0;i<medsFixed.size();i++) {
+				medsFixed.add(new LinkedUnbndQueue<Medication>());
+			}
+			while(!medsRaw.isEmpty()) {
+				String[] temp1 = medsRaw.dequeue().split("$");
+				Medication temp2 = new Medication(temp1[1],temp1[2],Integer.parseInt(temp1[3]),Integer.parseInt(temp1[4]),Integer.parseInt(temp1[5]),temp1[6],temp1[7]);
+				if (temp2.getDateSetting()==1) {
+					if(temp2.getTimeSetting()==1) {
+						medsFixed.get(temp2.getSpecificTime()).enqueue(temp2);
+					}
+					else {
+						
+					}
+				}
+			}
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 		e1.printStackTrace();
