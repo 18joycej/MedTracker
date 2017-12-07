@@ -77,7 +77,13 @@ private int[] multipleTimes;
 		return temp;
 	}
 	public String toString(int referenceNum) {
-		String temp=""+multipleTimes[referenceNum]/60+":"+(multipleTimes[referenceNum]%60)+"    "+name+"    "+doseage;
+		String temp;
+		if(specificTime/60<10) {
+			temp=""+multipleTimes[referenceNum]/60+":"+"0"+(multipleTimes[referenceNum]%60)+"    "+name+"    "+doseage;
+		}
+		else {
+			temp=""+multipleTimes[referenceNum]/60+":"+(multipleTimes[referenceNum]%60)+"    "+name+"    "+doseage;
+		}
 		return temp;
 	}
 }

@@ -112,7 +112,18 @@ public class GUI {
 			}
 		for(int i=0;i<medsFixed.size();i++) {
 			if(!medsFixed.get(i).isEmpty()) {
-			medicalList.add(medsFixed.get(i).dequeue().toString());
+				Medication temp=medsFixed.get(i).dequeue();
+				if (temp.getTimeSetting()==1) {
+					medicalList.add(temp.toString());
+				}
+				else {
+					System.out.println("Check1");
+					for(int r=0;r<temp.getMultipleTimes().length;r++) {
+						System.out.println("Check");
+						medicalList.add(temp.toString(r));
+					}
+					break;
+				}
 			}
 		}
 		} catch (IOException e1) {

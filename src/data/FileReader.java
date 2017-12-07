@@ -42,7 +42,7 @@ public class FileReader {
 		PrintWriter printer = new PrintWriter(new FileOutputStream(mainFile));
 		String temp=med.getName()+"$"+med.getDoseage()+"$"+med.getUrgency()+"$"+med.getTimeSetting()+"$"+med.getDateSetting()+"$";
 		if(med.getDateSetting()==1) {
-			temp=temp+"$"+med.getDayInterval();
+			temp=temp+med.getDayInterval()+"$";
 		}
 		else if(med.getDateSetting()==2) {
 			int[] temp2=med.getSelectDays();
@@ -50,13 +50,15 @@ public class FileReader {
 			for(int i=1;i<temp2.length;i++) {
 				temp=temp+";"+temp2[i];
 			}
+			temp=temp+"$";
 		}
 		if(med.getTimeSetting()==1) {
-			temp=temp+"$"+med.getSpecificTime();
+			temp=temp+med.getSpecificTime();
 		}
 		else if(med.getTimeSetting()==2) {
 			int[] temp2=med.getMultipleTimes();
-			for(int i=0;i<temp2.length;i++) {
+			temp=temp+temp2[0];
+			for(int i=1;i<temp2.length;i++) {
 				temp=temp+";"+temp2[i];
 			}
 		}
