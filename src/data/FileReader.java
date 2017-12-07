@@ -40,14 +40,15 @@ public class FileReader {
 	 */
 	public void saveToFile(Medication med) throws IOException {
 		PrintWriter printer = new PrintWriter(new FileOutputStream(mainFile));
-		String temp=med.getName()+"$"+med.getDoseage()+"$"+med.getUrgency()+"$"+med.getTimeSetting()+"$"+med.getDateSetting();
+		String temp=med.getName()+"$"+med.getDoseage()+"$"+med.getUrgency()+"$"+med.getTimeSetting()+"$"+med.getDateSetting()+"$";
 		if(med.getDateSetting()==1) {
 			temp=temp+"$"+med.getDayInterval();
 		}
 		else if(med.getDateSetting()==2) {
 			int[] temp2=med.getSelectDays();
-			for(int i=0;i<temp2.length;i++) {
-				temp=temp+"$"+temp2[i];
+			temp=temp+temp2[0];
+			for(int i=1;i<temp2.length;i++) {
+				temp=temp+";"+temp2[i];
 			}
 		}
 		if(med.getTimeSetting()==1) {
@@ -56,7 +57,7 @@ public class FileReader {
 		else if(med.getTimeSetting()==2) {
 			int[] temp2=med.getMultipleTimes();
 			for(int i=0;i<temp2.length;i++) {
-				temp=temp+"$"+temp2[i];
+				temp=temp+";"+temp2[i];
 			}
 		}
 		System.out.println(temp);
