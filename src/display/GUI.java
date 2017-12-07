@@ -77,9 +77,9 @@ public class GUI {
 				medsFixed.add(new LinkedUnbndQueue<Medication>());
 			}
 			while(!medsRaw.isEmpty()) {
+				System.out.println("Run");
 				String[] temp1 = medsRaw.dequeue().split("\\$");
-				System.out.println(temp1[0]);
-				System.out.println(temp1.length);
+				System.out.println("Check");
 				Medication temp2 = new Medication(temp1[0],temp1[1],Integer.parseInt(temp1[2]),Integer.parseInt(temp1[3]),Integer.parseInt(temp1[4]),temp1[5],temp1[6]);
 				if (temp2.getDateSetting()==1) {
 					if(temp2.getTimeSetting()==1) {
@@ -88,6 +88,7 @@ public class GUI {
 					else {
 						for(int i=0;i<temp2.getMultipleTimes().length;i++) {
 							medsFixed.get(temp2.getMultipleTimes()[i]).enqueue(temp2);
+							System.out.println("Check3");
 						}
 					}
 				}
@@ -117,12 +118,7 @@ public class GUI {
 					medicalList.add(temp.toString());
 				}
 				else {
-					System.out.println("Check1");
-					for(int r=0;r<temp.getMultipleTimes().length;r++) {
-						System.out.println("Check");
-						medicalList.add(temp.toString(r));
-					}
-					break;
+					medicalList.add(temp.toString(i));
 				}
 			}
 		}
@@ -170,24 +166,85 @@ public class GUI {
 		ObservableList<String> obsLista = FXCollections.observableArrayList();
 		ObservableList<String> obsListe = FXCollections.observableArrayList();
 		ObservableList<String> obsListn = FXCollections.observableArrayList();
-		while(xList.size()!=0){
-			String xString = xList.remove(0);
-			String tString = xString.toString();
-			xString = xString.substring(0, xString.lastIndexOf("$"));
-			xString = xString.substring(xString.lastIndexOf("$")+1, xString.length());
-			int parse = Integer.parseInt(xString);
-			if(parse>=600 && parse<1200) {
-				obsListm.add(tString);
+		LinkedUnbndQueue<String> medsRaw = null;
+		Calendar today= Calendar.getInstance();
+		int dayOfWeek=today.get(Calendar.DAY_OF_WEEK);
+		try {
+			medsRaw=filer.readFromFile();
+			ArrayList<LinkedUnbndQueue<Medication>> medsFixed = new ArrayList<LinkedUnbndQueue<Medication>>(1440);
+			for(int i=0;i<1440;i++) {
+				medsFixed.add(new LinkedUnbndQueue<Medication>());
 			}
-			else if(parse<=1200 && parse<1700) {
-				obsLista.add(tString);
+			while(!medsRaw.isEmpty()) {
+				String[] temp1 = medsRaw.dequeue().split("\\$");
+				Medication temp2 = new Medication(temp1[0],temp1[1],Integer.parseInt(temp1[2]),Integer.parseInt(temp1[3]),Integer.parseInt(temp1[4]),temp1[5],temp1[6]);
+				if (temp2.getDateSetting()==1) {
+					if(temp2.getTimeSetting()==1) {
+						medsFixed.get(temp2.getSpecificTime()).enqueue(temp2);
+					}
+					else {
+						for(int i=0;i<temp2.getMultipleTimes().length;i++) {
+							medsFixed.get(temp2.getMultipleTimes()[i]).enqueue(temp2);
+						}
+					}
+				}
+				else {
+					boolean checker=false;
+						for(int i=0;i<temp2.getSelectDays().length;i++) {
+							if(temp2.getSelectDays()[i]==dayOfWeek) {
+								checker=true;
+							}
+						}
+						if(checker==true) {
+							if(temp2.getTimeSetting()==1) {
+								medsFixed.get(temp2.getSpecificTime()).enqueue(temp2);
+							}
+							else {
+								for(int i=0;i<temp2.getMultipleTimes().length;i++) {
+									medsFixed.get(temp2.getMultipleTimes()[i]).enqueue(temp2);
+								}
+							}
+						}
+				}
 			}
-			else if(parse>=1700 && parse<2100) {
-				obsListe.add(tString);
+		for(int i=0;i<medsFixed.size();i++) {
+			if(!medsFixed.get(i).isEmpty()) {
+				Medication temp=medsFixed.get(i).dequeue();
+				if (temp.getTimeSetting()==1) {
+					int parse = temp.getSpecificTime();
+					if(parse>=360 && parse<720) {
+						obsListm.add(temp.toString());
+					}
+					else if(parse<=720 && parse<1020) {
+						obsLista.add(temp.toString());
+					}
+					else if(parse>=1020 && parse<1260) {
+						obsListe.add(temp.toString());
+					}
+					else {
+						obsListn.add(temp.toString());
+					}
+				}
+				else {
+					int parse = i;
+					if(parse>=360 && parse<720) {
+						obsListm.add(temp.toString(i));
+					}
+					else if(parse>=720 && parse<1020) {
+						obsLista.add(temp.toString(i));
+					}
+					else if(parse>=1020 && parse<1260) {
+						obsListe.add(temp.toString(i));
+					}
+					else {
+						obsListn.add(temp.toString(i));
+					}
+				}
 			}
-			else {
-				obsListn.add(tString);
-			}
+		}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+		e1.printStackTrace();
 		}
 		ListView<String> listm = new ListView<String>(obsListm);
 		ListView<String> lista = new ListView<String>(obsLista);
