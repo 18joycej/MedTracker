@@ -30,7 +30,7 @@ public class Driver extends Application {
 			@Override
 			public void handle(ActionEvent e) {
 				GUI.setPath();
-				GUI.printable(mainStage);
+				GUI.home(mainStage);
 			}
 		});
 		Pane root = new Pane();

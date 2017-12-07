@@ -1,17 +1,19 @@
 package display;
 
-import java.awt.Checkbox;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import ch05.queues.LinkedUnbndQueue;
 import data.FileReader;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.control.TextField;
@@ -63,25 +65,25 @@ public class GUI {
 		t.setFont(new Font(20));
 		Rectangle rec = new Rectangle(0, 0, 500, 80);
 		AnchorPane root = new AnchorPane(rec);
-		LinkedUnbndQueue<String> medList;
 		List<String> medicalList = new ArrayList<String>();
+		LinkedUnbndQueue<String> medsRaw = null;
 		try {
 			filer.sortTime();
-			LinkedUnbndQueue<String> medsRaw=filer.readFromFile();
+			medsRaw=filer.readFromFile();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 		e1.printStackTrace();
 		}
-		LinkedUnbndQueue<>
-		while(!medicalList.isEmpty()) {
-			
+		while(!medsRaw.isEmpty()) {
+		medicalList.add(medsRaw.dequeue());
 		}
-		//ListView<String> graphList = new ListView<String>((ObservableList<String>) medList);
+		ObservableList<String> obsList = FXCollections.observableArrayList(medicalList);
+		ListView<String> graphList = new ListView<String>(obsList);
 		ScrollPane list = new ScrollPane();
 		list.setLayoutY(80);
 		list.setVbarPolicy(ScrollBarPolicy.ALWAYS);
 		list.setPrefSize(500, 250);
-		//list.setContent(graphList);
+		list.setContent(graphList);
 		rec.setFill(Color.ORANGERED);
 		root.getChildren().add(print);
 		root.getChildren().add(add);
