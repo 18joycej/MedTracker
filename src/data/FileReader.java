@@ -39,7 +39,11 @@ public class FileReader {
 	 * @throws IOException
 	 */
 	public void saveToFile(Medication med) throws IOException {
+		LinkedUnbndQueue<String> preExisting=readFromFile();
 		PrintWriter printer = new PrintWriter(new FileOutputStream(mainFile));
+		while(!preExisting.isEmpty()) {
+			printer.println(preExisting.dequeue());
+		}
 		String temp=med.getName()+"$"+med.getDoseage()+"$"+med.getUrgency()+"$"+med.getTimeSetting()+"$"+med.getDateSetting()+"$";
 		if(med.getDateSetting()==1) {
 			temp=temp+med.getDayInterval()+"$";
