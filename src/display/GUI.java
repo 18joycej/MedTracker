@@ -66,10 +66,15 @@ public class GUI {
 		LinkedUnbndQueue<String> medList;
 		List<String> medicalList = new ArrayList<String>();
 		try {
-			filer.readFromFile();
+			filer.sortTime();
+			LinkedUnbndQueue<String> medsRaw=filer.readFromFile();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 		e1.printStackTrace();
+		}
+		LinkedUnbndQueue<>
+		while(!medicalList.isEmpty()) {
+			
 		}
 		//ListView<String> graphList = new ListView<String>((ObservableList<String>) medList);
 		ScrollPane list = new ScrollPane();

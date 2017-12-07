@@ -59,6 +59,8 @@ public class FileReader {
 				temp=temp+"$"+temp2[i];
 			}
 		}
+		printer.println(temp);
+		printer.close();
 	}
 	public LinkedUnbndQueue<String> readFromFile() throws FileNotFoundException {
 		File readFile = new File(path);
@@ -70,7 +72,6 @@ public class FileReader {
 		reader.close();
 		return fileLines;
 	}
-
 	/**
 	 * Used to sort the list of medication.
 	 * 
