@@ -39,6 +39,7 @@ public class GUI {
 	}
 	public static void home(Stage xStage) {
 		xStage.setTitle("Medicine Tracker");
+		List<String> medicalList = new ArrayList<String>();
 		Button print = new Button();
 		print.setText("Print");
 		print.setLayoutX(20);
@@ -46,7 +47,7 @@ public class GUI {
 		print.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				GUI.printable(xStage);
+				GUI.printable(xStage, medicalList);
 			}
 		});
 		Button add = new Button();
@@ -65,7 +66,6 @@ public class GUI {
 		t.setFont(new Font(20));
 		Rectangle rec = new Rectangle(0, 0, 500, 80);
 		AnchorPane root = new AnchorPane(rec);
-		List<String> medicalList = new ArrayList<String>();
 		LinkedUnbndQueue<String> medsRaw = null;
 		try {
 			filer.sortTime();
@@ -111,8 +111,35 @@ public class GUI {
 		xStage.show();
 	}
 
-	public static void printable(Stage xStage) {
+	public static void printable(Stage xStage, List<String> xList) {
 		Button back = new Button();
+		ObservableList<String> obsListm = FXCollections.observableArrayList();
+		ObservableList<String> obsLista = FXCollections.observableArrayList();
+		ObservableList<String> obsListe = FXCollections.observableArrayList();
+		ObservableList<String> obsListn = FXCollections.observableArrayList();
+		while(xList.size()!=0){
+			String xString = xList.remove(0);
+			String tString = xString.toString();
+			xString = xString.substring(0, xString.lastIndexOf("$"));
+			xString = xString.substring(xString.lastIndexOf("$")+1, xString.length());
+			int parse = Integer.parseInt(xString);
+			if(parse>=600 && parse<1200) {
+				obsListm.add(tString);
+			}
+			else if(parse<=1200 && parse<1700) {
+				obsLista.add(tString);
+			}
+			else if(parse>=1700 && parse<2100) {
+				obsListe.add(tString);
+			}
+			else {
+				obsListn.add(tString);
+			}
+		}
+		ListView<String> listm = new ListView<String>(obsListm);
+		ListView<String> lista = new ListView<String>(obsLista);
+		ListView<String> liste = new ListView<String>(obsListe);
+		ListView<String> listn = new ListView<String>(obsListn);
 		Text t = new Text();
 		t.setText("Printable");
 		t.setFont(new Font(20));
@@ -153,6 +180,22 @@ public class GUI {
 		Text amount2 = new Text(410, 90, "Amount");
 		Text amount3= new Text(160, 230, "Amount");
 		Text amount4 = new Text(410, 230, "Amount");
+		ScrollPane panem = new ScrollPane(listm);
+		listm.setPrefSize(200, 40);
+		listm.setLayoutX(40);
+		listm.setLayoutY(125);
+		ScrollPane panea = new ScrollPane(lista);
+		lista.setPrefSize(200, 40);
+		lista.setLayoutX(290);
+		lista.setLayoutY(125);
+		ScrollPane panee = new ScrollPane(liste);
+		liste.setPrefSize(200, 40);
+		liste.setLayoutX(40);
+		liste.setLayoutY(265);
+		ScrollPane panen = new ScrollPane(listn);
+		listn.setPrefSize(200, 40);
+		listn.setLayoutX(290);
+		listn.setLayoutY(265);
 		CheckBox check1 = new CheckBox();
 		check1.setLayoutX(230);
 		check1.setLayoutY(90);
@@ -188,6 +231,10 @@ public class GUI {
 		root.getChildren().add(check2);
 		root.getChildren().add(check3);
 		root.getChildren().add(check4);
+		root.getChildren().add(listm);
+		root.getChildren().add(lista);
+		root.getChildren().add(liste);
+		root.getChildren().add(listn);
 		xStage.setScene(new Scene(root, 500, 350));
 		xStage.show();
 	}
