@@ -298,7 +298,7 @@ public class GUI {
 		TextField timet = new TextField();
 		timet.setLayoutX(300);
 		timet.setLayoutY(150);
-		timet.setText("Timing");;
+		timet.setText("Timing");
 		TextField urgent = new TextField();
 		urgent.setLayoutX(20);
 		urgent.setLayoutY(250);
@@ -330,11 +330,12 @@ public class GUI {
 				String dayz = days.getText();
 				String time = timet.getText();
 				try {
+					System.out.println("name: "+name+" dose: "+dose+" urgency: "+urgency+" timeSetting: "+timeSetting+" dateSetting: "+dateSetting+" dayz: "+dayz+" time: "+time);
 					if(dateSetting==2){
-					filer.saveToFile(new Medication(name, dose, urgency, timeSetting, dateSetting, days.getText(), time));
+					filer.saveToFile(new Medication(name, dose, urgency, timeSetting, dateSetting, dayz, time));
 					}
 					else if(dateSetting==1) {
-					filer.saveToFile(new Medication(name, dose, urgency, timeSetting, dateSetting, "1", time));
+					filer.saveToFile(new Medication(name, dose, urgency, timeSetting, dateSetting, dayz, time));
 					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block

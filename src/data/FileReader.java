@@ -59,6 +59,7 @@ public class FileReader {
 				temp=temp+"$"+temp2[i];
 			}
 		}
+		System.out.println(temp);
 		printer.println(temp);
 		printer.close();
 	}
