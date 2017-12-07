@@ -98,7 +98,7 @@ public class GUI {
 								checker=true;
 							}
 						}
-						if(checker=true) {
+						if(checker==true) {
 							if(temp2.getTimeSetting()==1) {
 								medsFixed.get(temp2.getSpecificTime()).enqueue(temp2);
 							}

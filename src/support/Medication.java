@@ -7,12 +7,12 @@ private int urgencyState; //1: Low, 2: Medium, 3: High,
 private int timeSetting; //1: Specific time, 2: Multiple times
 private int dateSetting; //1: Daily, 2: Specific days of week
 private int[] selectDays;
-private boolean daily;
+private int daily;
 private int specificTime;
 private int timeIntervals;
 private int[] multipleTimes;
 	public Medication(String xName, String xDoseage, int xUrgency, int xTimeSetting, int xDateSetting,
-	String xTimes, String xDays) {
+	String xDays, String xTimes) {
 		name=xName;
 		doseage=xDoseage;
 		urgencyState=xUrgency;
@@ -27,7 +27,7 @@ private int[] multipleTimes;
 				multipleTimes[i]=Integer.parseInt(temp[i]);
 			}
 		}
-		if(dateSetting==1) daily=true;
+		if(dateSetting==1) daily=1;
 		if(dateSetting==2) {
 			String[] temp=xDays.split(";");
 			selectDays=new int[temp.length];
@@ -54,7 +54,7 @@ private int[] multipleTimes;
 	public int[] getSelectDays() {
 		return selectDays;
 	}
-	public boolean getDayInterval() {
+	public int getDayInterval() {
 		return daily;
 	}
 	public int getSpecificTime() {

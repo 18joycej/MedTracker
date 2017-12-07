@@ -41,15 +41,6 @@ public class FileReader {
 	public void saveToFile(Medication med) throws IOException {
 		PrintWriter printer = new PrintWriter(new FileOutputStream(mainFile));
 		String temp=med.getName()+"$"+med.getDoseage()+"$"+med.getUrgency()+"$"+med.getTimeSetting()+"$"+med.getDateSetting();
-		if(med.getTimeSetting()==1) {
-			temp=temp+"$"+med.getSpecificTime();
-		}
-		else if(med.getTimeSetting()==2) {
-			int[] temp2=med.getMultipleTimes();
-			for(int i=0;i<temp2.length;i++) {
-				temp=temp+"$"+temp2[i];
-			}
-		}
 		if(med.getDateSetting()==1) {
 			temp=temp+"$"+med.getDayInterval();
 		}
@@ -59,12 +50,20 @@ public class FileReader {
 				temp=temp+"$"+temp2[i];
 			}
 		}
+		if(med.getTimeSetting()==1) {
+			temp=temp+"$"+med.getSpecificTime();
+		}
+		else if(med.getTimeSetting()==2) {
+			int[] temp2=med.getMultipleTimes();
+			for(int i=0;i<temp2.length;i++) {
+				temp=temp+"$"+temp2[i];
+			}
+		}
 		System.out.println(temp);
 		printer.println(temp);
 		printer.close();
 	}
 	public LinkedUnbndQueue<String> readFromFile() throws FileNotFoundException {
-		File readFile = new File(path);
 		Scanner reader = new Scanner(mainFile);
 		LinkedUnbndQueue<String> fileLines = new LinkedUnbndQueue<String>();
 		while(reader.hasNext()) {
