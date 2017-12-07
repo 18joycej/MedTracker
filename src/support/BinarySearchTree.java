@@ -267,10 +267,4 @@ public class BinarySearchTree<T extends Comparable<T>>
       return postOrderQueue.dequeue();
     else return null;
   }
-  public void addMedTime(Medication element) {
-	  recAddMedTime(Medication element)
-  }
-  private void recAddMedTime() {
-	  
-  }
 }
