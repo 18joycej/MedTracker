@@ -1,5 +1,6 @@
 package display;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -14,6 +15,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -61,6 +63,16 @@ public class GUI {
 				GUI.addMedPage(xStage);
 			}
 		});
+		Button remove = new Button();
+		remove.setText("Remove");
+		remove.setLayoutX(440);
+		remove.setLayoutY(50);
+		remove.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				GUI.removePage(xStage);
+			}
+		});
 		Text t = new Text("Home Menu");
 		t.setLayoutX(200);
 		t.setLayoutY(45);
@@ -80,7 +92,7 @@ public class GUI {
 				System.out.println("Run");
 				String[] temp1 = medsRaw.dequeue().split("\\$");
 				System.out.println("Check");
-				Medication temp2 = new Medication(temp1[0],temp1[1],Integer.parseInt(temp1[2]),Integer.parseInt(temp1[3]),Integer.parseInt(temp1[4]),temp1[5],temp1[6]);
+				Medication temp2 = new Medication(temp1[0],temp1[1],Integer.parseInt(temp1[2]),Integer.parseInt(temp1[3]),Integer.parseInt(temp1[4]),temp1[5],temp1[6],1);
 				if (temp2.getDateSetting()==1) {
 					if(temp2.getTimeSetting()==1) {
 						medsFixed.get(temp2.getSpecificTime()).enqueue(temp2);
@@ -88,7 +100,6 @@ public class GUI {
 					else {
 						for(int i=0;i<temp2.getMultipleTimes().length;i++) {
 							medsFixed.get(temp2.getMultipleTimes()[i]).enqueue(temp2);
-							System.out.println("Check3");
 						}
 					}
 				}
@@ -136,6 +147,7 @@ public class GUI {
 		rec.setFill(Color.ORANGERED);
 		root.getChildren().add(print);
 		root.getChildren().add(add);
+		root.getChildren().add(remove);
 		root.getChildren().add(t);
 		root.getChildren().add(list);
 		xStage.setScene(new Scene(root, 500, 350));
@@ -177,7 +189,7 @@ public class GUI {
 			}
 			while(!medsRaw.isEmpty()) {
 				String[] temp1 = medsRaw.dequeue().split("\\$");
-				Medication temp2 = new Medication(temp1[0],temp1[1],Integer.parseInt(temp1[2]),Integer.parseInt(temp1[3]),Integer.parseInt(temp1[4]),temp1[5],temp1[6]);
+				Medication temp2 = new Medication(temp1[0],temp1[1],Integer.parseInt(temp1[2]),Integer.parseInt(temp1[3]),Integer.parseInt(temp1[4]),temp1[5],temp1[6],1);
 				if (temp2.getDateSetting()==1) {
 					if(temp2.getTimeSetting()==1) {
 						medsFixed.get(temp2.getSpecificTime()).enqueue(temp2);
@@ -400,10 +412,10 @@ public class GUI {
 				try {
 					System.out.println("name: "+name+" dose: "+dose+" urgency: "+urgency+" timeSetting: "+timeSetting+" dateSetting: "+dateSetting+" dayz: "+dayz+" time: "+time);
 					if(dateSetting==2){
-					filer.saveToFile(new Medication(name, dose, urgency, timeSetting, dateSetting, dayz, time));
+					filer.saveToFile(new Medication(name, dose, urgency, timeSetting, dateSetting, dayz, time, 1));
 					}
 					else if(dateSetting==1) {
-					filer.saveToFile(new Medication(name, dose, urgency, timeSetting, dateSetting, dayz, time));
+					filer.saveToFile(new Medication(name, dose, urgency, timeSetting, dateSetting, dayz, time, 1));
 					}
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -486,27 +498,35 @@ public class GUI {
 		t.setLayoutX(180);
 		t.setLayoutY(45);
 		t.setFont(new Font(20));
-		t.setText("Add Exercise");
+		t.setText("Add Excersise");
 		TextField field = new TextField();
 		field.setLayoutX(20);
-		field.setLayoutY(140);
-		field.setText("Type in an exercise");
-		TextField urgency = new TextField();
-		urgency.setLayoutX(20);
-		urgency.setLayoutY(170);
-		urgency.setText("Type in the urgency as a number");
-		TextField timing = new TextField();
-		timing.setLayoutX(340);
-		timing.setLayoutY(140);
-		timing.setText("Enter the time for the exercise");
-		TextField reps = new TextField();
-		reps.setLayoutX(340);
-		reps.setLayoutY(170);
-		reps.setText("Enter the number of reps");
+		field.setLayoutY(150);
+		field.setText("Name of exercise");
+		TextField doset = new TextField();
+		doset.setLayoutX(20);
+		doset.setLayoutY(200);
+		doset.setText("Reps");
+		TextField timet = new TextField();
+		timet.setLayoutX(300);
+		timet.setLayoutY(150);
+		timet.setText("Timing");
+		TextField urgent = new TextField();
+		urgent.setLayoutX(20);
+		urgent.setLayoutY(250);
+		urgent.setText("Urgency as a number");
+		TextField times = new TextField();
+		times.setLayoutX(300);
+		times.setLayoutY(200);
+		times.setText("Number of times per day");
+		TextField dates = new TextField();
+		dates.setLayoutX(300);
+		dates.setLayoutY(240);
+		dates.setText("Enter the date setting");
 		TextField days = new TextField();
-		days.setLayoutX(340);
-		days.setLayoutY(200);
-		days.setText("Enter the days separated by ;");
+		days.setLayoutX(300);
+		days.setLayoutY(270);
+		days.setText("If setting 2, enter the days to take it, separated by ;");
 		Button save = new Button();
 		save.setText("Save");
 		save.setLayoutX(440);
@@ -514,7 +534,25 @@ public class GUI {
 		save.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				//filer.saveToFile();
+				String name = field.getText();
+				String dose = doset.getText();
+				int urgency = Integer.parseInt(urgent.getText());
+				int timeSetting = Integer.parseInt(times.getText());
+				int dateSetting = Integer.parseInt(dates.getText());
+				String dayz = days.getText();
+				String time = timet.getText();
+				try {
+					System.out.println("name: "+name+" dose: "+dose+" urgency: "+urgency+" timeSetting: "+timeSetting+" dateSetting: "+dateSetting+" dayz: "+dayz+" time: "+time);
+					if(dateSetting==2){
+					filer.saveToFile(new Medication(name, dose, urgency, timeSetting, dateSetting, dayz, time, 2));
+					}
+					else if(dateSetting==1) {
+					filer.saveToFile(new Medication(name, dose, urgency, timeSetting, dateSetting, dayz, time, 2));
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				GUI.home(xStage);
 			}
 		});
@@ -577,9 +615,11 @@ public class GUI {
 		root.getChildren().add(other);
 		root.getChildren().add(t);
 		root.getChildren().add(field);
-		root.getChildren().add(urgency);
-		root.getChildren().add(timing);
-		root.getChildren().add(reps);
+		root.getChildren().add(doset);
+		root.getChildren().add(timet);
+		root.getChildren().add(urgent);
+		root.getChildren().add(times);
+		root.getChildren().add(dates);
 		root.getChildren().add(days);
 		xStage.setScene(new Scene(root, 500, 350));
 		xStage.show();
@@ -590,10 +630,35 @@ public class GUI {
 		t.setLayoutX(180);
 		t.setLayoutY(45);
 		t.setFont(new Font(20));
-		t.setText("Add Reading");
+		t.setText("Add Readomg");
 		TextField field = new TextField();
 		field.setLayoutX(20);
-		field.setLayoutY(100);
+		field.setLayoutY(150);
+		field.setText("Name of biological reading");
+		TextField doset = new TextField();
+		doset.setLayoutX(20);
+		doset.setLayoutY(200);
+		doset.setText("Notes");
+		TextField timet = new TextField();
+		timet.setLayoutX(300);
+		timet.setLayoutY(150);
+		timet.setText("Timing");
+		TextField urgent = new TextField();
+		urgent.setLayoutX(20);
+		urgent.setLayoutY(250);
+		urgent.setText("Urgency as a number");
+		TextField times = new TextField();
+		times.setLayoutX(300);
+		times.setLayoutY(200);
+		times.setText("Number of times per day");
+		TextField dates = new TextField();
+		dates.setLayoutX(300);
+		dates.setLayoutY(240);
+		dates.setText("Enter the date setting");
+		TextField days = new TextField();
+		days.setLayoutX(300);
+		days.setLayoutY(270);
+		days.setText("If setting 2, enter the days to take it, separated by ;");
 		Button save = new Button();
 		save.setText("Save");
 		save.setLayoutX(440);
@@ -601,7 +666,25 @@ public class GUI {
 		save.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				//filer.saveToFile();
+				String name = field.getText();
+				String dose = doset.getText();
+				int urgency = Integer.parseInt(urgent.getText());
+				int timeSetting = Integer.parseInt(times.getText());
+				int dateSetting = Integer.parseInt(dates.getText());
+				String dayz = days.getText();
+				String time = timet.getText();
+				try {
+					System.out.println("name: "+name+" dose: "+dose+" urgency: "+urgency+" timeSetting: "+timeSetting+" dateSetting: "+dateSetting+" dayz: "+dayz+" time: "+time);
+					if(dateSetting==2){
+					filer.saveToFile(new Medication(name, dose, urgency, timeSetting, dateSetting, dayz, time, 3));
+					}
+					else if(dateSetting==1) {
+					filer.saveToFile(new Medication(name, dose, urgency, timeSetting, dateSetting, dayz, time, 3));
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				GUI.home(xStage);
 			}
 		});
@@ -663,6 +746,13 @@ public class GUI {
 		root.getChildren().add(reading);
 		root.getChildren().add(other);
 		root.getChildren().add(t);
+		root.getChildren().add(field);
+		root.getChildren().add(doset);
+		root.getChildren().add(timet);
+		root.getChildren().add(urgent);
+		root.getChildren().add(times);
+		root.getChildren().add(dates);
+		root.getChildren().add(days);
 		xStage.setScene(new Scene(root, 500, 350));
 		xStage.show();
 	}
@@ -675,7 +765,32 @@ public class GUI {
 		t.setText("Add Other");
 		TextField field = new TextField();
 		field.setLayoutX(20);
-		field.setLayoutY(100);
+		field.setLayoutY(150);
+		field.setText("Name of activity");
+		TextField doset = new TextField();
+		doset.setLayoutX(20);
+		doset.setLayoutY(200);
+		doset.setText("Notes");
+		TextField timet = new TextField();
+		timet.setLayoutX(300);
+		timet.setLayoutY(150);
+		timet.setText("Timing");
+		TextField urgent = new TextField();
+		urgent.setLayoutX(20);
+		urgent.setLayoutY(250);
+		urgent.setText("Urgency as a number");
+		TextField times = new TextField();
+		times.setLayoutX(300);
+		times.setLayoutY(200);
+		times.setText("Number of times per day");
+		TextField dates = new TextField();
+		dates.setLayoutX(300);
+		dates.setLayoutY(240);
+		dates.setText("Enter the date setting");
+		TextField days = new TextField();
+		days.setLayoutX(300);
+		days.setLayoutY(270);
+		days.setText("If setting 2, enter the days to take it, separated by ;");
 		Button save = new Button();
 		save.setText("Save");
 		save.setLayoutX(440);
@@ -683,7 +798,25 @@ public class GUI {
 		save.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent e) {
-				//filer.saveToFile();
+				String name = field.getText();
+				String dose = doset.getText();
+				int urgency = Integer.parseInt(urgent.getText());
+				int timeSetting = Integer.parseInt(times.getText());
+				int dateSetting = Integer.parseInt(dates.getText());
+				String dayz = days.getText();
+				String time = timet.getText();
+				try {
+					System.out.println("name: "+name+" dose: "+dose+" urgency: "+urgency+" timeSetting: "+timeSetting+" dateSetting: "+dateSetting+" dayz: "+dayz+" time: "+time);
+					if(dateSetting==2){
+					filer.saveToFile(new Medication(name, dose, urgency, timeSetting, dateSetting, dayz, time, 4));
+					}
+					else if(dateSetting==1) {
+					filer.saveToFile(new Medication(name, dose, urgency, timeSetting, dateSetting, dayz, time, 4));
+					}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				GUI.home(xStage);
 			}
 		});
@@ -745,6 +878,99 @@ public class GUI {
 		root.getChildren().add(reading);
 		root.getChildren().add(other);
 		root.getChildren().add(t);
+		root.getChildren().add(field);
+		root.getChildren().add(doset);
+		root.getChildren().add(timet);
+		root.getChildren().add(urgent);
+		root.getChildren().add(times);
+		root.getChildren().add(dates);
+		root.getChildren().add(days);
+		xStage.setScene(new Scene(root, 500, 350));
+		xStage.show();
+	}
+	public static void removePage(Stage xStage) {
+		Text t = new Text();
+		t.setLayoutX(180);
+		t.setLayoutY(45);
+		t.setFont(new Font(20));
+		t.setText("Remove");
+		List<String> medicalList = new ArrayList<String>();
+		LinkedUnbndQueue<String> medsRaw = null;
+		ArrayList<String> names=new ArrayList<String>();
+		try {
+			medsRaw=filer.readFromFile();
+			LinkedUnbndQueue<Medication> medsFixed = new LinkedUnbndQueue<Medication>();
+			while(!medsRaw.isEmpty()) {
+				String[] temp1 = medsRaw.dequeue().split("\\$");
+				Medication temp2 = new Medication(temp1[0],temp1[1],Integer.parseInt(temp1[2]),Integer.parseInt(temp1[3]),Integer.parseInt(temp1[4]),temp1[5],temp1[6],1);
+				if(temp2.getTimeSetting()==1) {
+					medsFixed.enqueue(temp2);
+				}
+				else {
+					medsFixed.enqueue(temp2);
+				}
+			}
+		while(!medsFixed.isEmpty()) {
+				Medication temp=medsFixed.dequeue();
+				if (temp.getTimeSetting()==1) {
+					medicalList.add(temp.getName());
+				}
+				else {
+					medicalList.add(temp.getName());
+				}
+			}
+	} catch (IOException e1) {
+		// TODO Auto-generated catch block
+	e1.printStackTrace();
+	}
+		for(int i=0;i<medicalList.size();i++) {
+			names.add(""+(i+1)+". "+medicalList.get(i));
+		}
+		ObservableList<String> fullList = FXCollections.observableArrayList(names);
+		final ComboBox<String> selectableList=new ComboBox<String>(fullList);
+		selectableList.setLayoutX(180);
+		selectableList.setLayoutY(150);
+		TextField field = new TextField();
+		field.setLayoutX(20);
+		field.setLayoutY(150);
+		field.setText("Number of item");
+		Button delete = new Button();
+		delete.setText("Delete");
+		delete.setLayoutX(440);
+		delete.setLayoutY(20);
+		delete.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				try {
+					filer.deleteFromFile(Integer.parseInt(field.getText()));
+					GUI.home(xStage);
+				} catch (NumberFormatException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		Button cancel = new Button();
+		cancel.setText("Cancel");
+		cancel.setLayoutX(20);
+		cancel.setLayoutY(20);
+		cancel.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				GUI.home(xStage);
+			}
+		});
+		Rectangle rec = new Rectangle(0, 0, 500, 80);
+		AnchorPane root = new AnchorPane(rec);
+		rec.setFill(Color.ORANGERED);
+		root.getChildren().add(delete);
+		root.getChildren().add(cancel);
+		root.getChildren().add(t);
+		root.getChildren().add(field);
+		root.getChildren().add(selectableList);
 		xStage.setScene(new Scene(root, 500, 350));
 		xStage.show();
 	}

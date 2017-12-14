@@ -11,8 +11,9 @@ private int daily;
 private int specificTime;
 private int timeIntervals;
 private int[] multipleTimes;
+private int mode;
 	public Medication(String xName, String xDoseage, int xUrgency, int xTimeSetting, int xDateSetting,
-	String xDays, String xTimes) {
+	String xDays, String xTimes, int xMode) {
 		name=xName;
 		doseage=xDoseage;
 		urgencyState=xUrgency;
@@ -35,6 +36,7 @@ private int[] multipleTimes;
 				selectDays[i]=Integer.parseInt(temp[i]);
 			}
 		}
+		mode=xMode;
 	}
 	public String getName() {
 		return name;
@@ -66,9 +68,12 @@ private int[] multipleTimes;
 	public int[] getMultipleTimes() {
 		return multipleTimes;
 	}
+	public int getMode() {
+		return mode;
+	}
 	public String toString() {
 		String temp;
-		if(specificTime/60<10) {
+		if(specificTime%60<10) {
 			temp=""+specificTime/60+":"+"0"+(specificTime%60)+"    "+name+"    "+doseage;
 		}
 		else {
@@ -78,7 +83,7 @@ private int[] multipleTimes;
 	}
 	public String toString(int referenceNum) {
 		String temp;
-		if(specificTime/60<10) {
+		if(specificTime%60<10) {
 			temp=""+referenceNum/60+":"+"0"+(referenceNum%60)+"    "+name+"    "+doseage;
 		}
 		else {

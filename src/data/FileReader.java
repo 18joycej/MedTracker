@@ -66,6 +66,7 @@ public class FileReader {
 				temp=temp+";"+temp2[i];
 			}
 		}
+		temp=temp+"$"+med.getMode();
 		printer.println(temp);
 		printer.close();
 	}
@@ -113,14 +114,15 @@ public class FileReader {
 	 * @throws FileNotFoundException
 	 *             - mainFile doesn't have a path
 	 */
-	public void deleteFromFile(String del) throws FileNotFoundException {
+	public void deleteFromFile(int num) throws FileNotFoundException {
 		Scanner reader = new Scanner(mainFile);
 		LinkedUnbndQueue<String> fileLines = new LinkedUnbndQueue<String>();
-		String x;
+		int iterations=1;
 		while (reader.hasNextLine()) {
-			x = reader.nextLine();
-			if (!x.equals(del))
-				fileLines.enqueue(x);
+			if (num!=iterations)
+				fileLines.enqueue(reader.nextLine());
+			else reader.nextLine();
+			iterations++;
 		}
 		reader.close();
 		mainFile.delete();

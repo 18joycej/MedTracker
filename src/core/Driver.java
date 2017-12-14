@@ -12,7 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-public class Driver extends Application {
+public class Driver extends Application{
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
