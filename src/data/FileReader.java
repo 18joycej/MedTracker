@@ -19,7 +19,6 @@ public class FileReader {
 	public FileReader(String path) {
 		this.path = path;
 		mainFile = new File(path);
-		System.out.println(path);
 		if(!mainFile.exists()) {
 			try {
 				mainFile.createNewFile();

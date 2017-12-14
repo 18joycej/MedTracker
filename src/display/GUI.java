@@ -1,7 +1,10 @@
 package display;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -14,7 +17,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -43,16 +45,6 @@ public class GUI {
 	public static void home(Stage xStage) {
 		xStage.setTitle("Medicine Tracker");
 		List<String> medicalList = new ArrayList<String>();
-		Button print = new Button();
-		print.setText("Print");
-		print.setLayoutX(20);
-		print.setLayoutY(20);
-		print.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				GUI.printable(xStage, medicalList);
-			}
-		});
 		Button add = new Button();
 		add.setText("Add");
 		add.setLayoutX(440);
@@ -77,6 +69,23 @@ public class GUI {
 		t.setLayoutX(200);
 		t.setLayoutY(45);
 		t.setFont(new Font(20));
+		Text logText=new Text ("Log here:");
+		logText.setLayoutX(300);
+		logText.setLayoutY(100);
+		logText.setFont(new Font(18));
+		TextField itemName = new TextField();
+		itemName.setLayoutX(270);
+		itemName.setLayoutY(130);
+		itemName.setText("Name of item");
+		TextField summary = new TextField();
+		summary.setLayoutX(270);
+		summary.setLayoutY(200);
+		summary.setMinSize(120, 50);
+		summary.setText("Enter notes");
+		TextField amounts = new TextField();
+		amounts.setLayoutX(270);
+		amounts.setLayoutY(160);
+		amounts.setText("Enter doseage/reading/reps done");
 		Rectangle rec = new Rectangle(0, 0, 500, 80);
 		AnchorPane root = new AnchorPane(rec);
 		LinkedUnbndQueue<String> medsRaw = null;
@@ -122,34 +131,84 @@ public class GUI {
 						}
 				}
 			}
+		File printFile = new File("src\\data\\printable.txt");
+		printFile.delete();
+		try {
+			printFile.createNewFile();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		PrintWriter printableWriter=new PrintWriter(new FileOutputStream(printFile));
 		for(int i=0;i<medsFixed.size();i++) {
 			if(!medsFixed.get(i).isEmpty()) {
 				Medication temp=medsFixed.get(i).dequeue();
 				if (temp.getTimeSetting()==1) {
 					medicalList.add(temp.toString());
+					printableWriter.println(temp.toString());
 				}
 				else {
 					medicalList.add(temp.toString(i));
+					printableWriter.println(temp.toString(i));
 				}
 			}
 		}
+		printableWriter.close();
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 		e1.printStackTrace();
 		}
+		Button log = new Button();
+		log.setText("Log");
+		log.setLayoutX(270);
+		log.setLayoutY(250);
+		log.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event){
+				File logFile = new File("src\\data\\log.txt");
+				if(!logFile.exists()) {
+					try {
+						logFile.createNewFile();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				try {
+					PrintWriter temporary=new PrintWriter(new FileOutputStream(logFile));
+					Calendar timeAndDate=Calendar.getInstance();
+					temporary.println(""+timeAndDate.get(Calendar.MONTH)+"/"+timeAndDate.get(Calendar.DAY_OF_MONTH)+"/"+timeAndDate.get(Calendar.YEAR)+": "+itemName.getText()+", "+amounts.getText()+", "+summary.getText());
+					temporary.close();
+					Thread.sleep(3000);
+					GUI.home(xStage);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+			}
+		});
 		ObservableList<String> obsList = FXCollections.observableArrayList(medicalList);
 		ListView<String> graphList = new ListView<String>(obsList);
 		ScrollPane list = new ScrollPane();
 		list.setLayoutY(80);
 		list.setVbarPolicy(ScrollBarPolicy.ALWAYS);
-		list.setPrefSize(500, 250);
+		list.setHbarPolicy(ScrollBarPolicy.NEVER);
+		list.setPrefSize(260, 250);
 		list.setContent(graphList);
 		rec.setFill(Color.ORANGERED);
-		root.getChildren().add(print);
 		root.getChildren().add(add);
 		root.getChildren().add(remove);
 		root.getChildren().add(t);
 		root.getChildren().add(list);
+		root.getChildren().add(logText);
+		root.getChildren().add(summary);
+		root.getChildren().add(amounts);
+		root.getChildren().add(itemName);
+		root.getChildren().add(log);
 		xStage.setScene(new Scene(root, 500, 350));
 	}
 
@@ -171,196 +230,6 @@ public class GUI {
 		xStage.setScene(new Scene(root, 500, 350));
 		xStage.show();
 	}
-
-	public static void printable(Stage xStage, List<String> xList) {
-		Button back = new Button();
-		ObservableList<String> obsListm = FXCollections.observableArrayList();
-		ObservableList<String> obsLista = FXCollections.observableArrayList();
-		ObservableList<String> obsListe = FXCollections.observableArrayList();
-		ObservableList<String> obsListn = FXCollections.observableArrayList();
-		LinkedUnbndQueue<String> medsRaw = null;
-		Calendar today= Calendar.getInstance();
-		int dayOfWeek=today.get(Calendar.DAY_OF_WEEK);
-		try {
-			medsRaw=filer.readFromFile();
-			ArrayList<LinkedUnbndQueue<Medication>> medsFixed = new ArrayList<LinkedUnbndQueue<Medication>>(1440);
-			for(int i=0;i<1440;i++) {
-				medsFixed.add(new LinkedUnbndQueue<Medication>());
-			}
-			while(!medsRaw.isEmpty()) {
-				String[] temp1 = medsRaw.dequeue().split("\\$");
-				Medication temp2 = new Medication(temp1[0],temp1[1],Integer.parseInt(temp1[2]),Integer.parseInt(temp1[3]),Integer.parseInt(temp1[4]),temp1[5],temp1[6],1);
-				if (temp2.getDateSetting()==1) {
-					if(temp2.getTimeSetting()==1) {
-						medsFixed.get(temp2.getSpecificTime()).enqueue(temp2);
-					}
-					else {
-						for(int i=0;i<temp2.getMultipleTimes().length;i++) {
-							medsFixed.get(temp2.getMultipleTimes()[i]).enqueue(temp2);
-						}
-					}
-				}
-				else {
-					boolean checker=false;
-						for(int i=0;i<temp2.getSelectDays().length;i++) {
-							if(temp2.getSelectDays()[i]==dayOfWeek) {
-								checker=true;
-							}
-						}
-						if(checker==true) {
-							if(temp2.getTimeSetting()==1) {
-								medsFixed.get(temp2.getSpecificTime()).enqueue(temp2);
-							}
-							else {
-								for(int i=0;i<temp2.getMultipleTimes().length;i++) {
-									medsFixed.get(temp2.getMultipleTimes()[i]).enqueue(temp2);
-								}
-							}
-						}
-				}
-			}
-		for(int i=0;i<medsFixed.size();i++) {
-			if(!medsFixed.get(i).isEmpty()) {
-				Medication temp=medsFixed.get(i).dequeue();
-				if (temp.getTimeSetting()==1) {
-					int parse = temp.getSpecificTime();
-					if(parse>=360 && parse<720) {
-						obsListm.add(temp.toString());
-					}
-					else if(parse<=720 && parse<1020) {
-						obsLista.add(temp.toString());
-					}
-					else if(parse>=1020 && parse<1260) {
-						obsListe.add(temp.toString());
-					}
-					else {
-						obsListn.add(temp.toString());
-					}
-				}
-				else {
-					int parse = i;
-					if(parse>=360 && parse<720) {
-						obsListm.add(temp.toString(i));
-					}
-					else if(parse>=720 && parse<1020) {
-						obsLista.add(temp.toString(i));
-					}
-					else if(parse>=1020 && parse<1260) {
-						obsListe.add(temp.toString(i));
-					}
-					else {
-						obsListn.add(temp.toString(i));
-					}
-				}
-			}
-		}
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
-		e1.printStackTrace();
-		}
-		ListView<String> listm = new ListView<String>(obsListm);
-		ListView<String> lista = new ListView<String>(obsLista);
-		ListView<String> liste = new ListView<String>(obsListe);
-		ListView<String> listn = new ListView<String>(obsListn);
-		Text t = new Text();
-		t.setText("Printable");
-		t.setFont(new Font(20));
-		t.setLayoutX(200);
-		t.setLayoutY(45);
-		back.setText("Back");
-		back.setLayoutX(20);
-		back.setLayoutY(20);
-		back.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent e) {
-				GUI.home(xStage);
-			}
-		});
-		Rectangle rec = new Rectangle(0, 0, 500, 60);
-		AnchorPane root = new AnchorPane(rec);
-		Text morning = new Text("Morning");
-		morning.setLayoutX(40);
-		morning.setLayoutY(70);
-		Text afternoon = new Text("Afternoon");
-		afternoon.setLayoutX(290);
-		afternoon.setLayoutY(70);
-		Text evening = new Text("Evening");
-		evening.setLayoutX(40);
-		evening.setLayoutY(210);
-		Text night = new Text("Night");
-		night.setLayoutX(290);
-		night.setLayoutY(210);
-		Text time1 = new Text(40, 90, "Time");
-		Text time2 = new Text(290, 90, "Time");
-		Text time3 = new Text(40, 230, "Time");
-		Text time4 = new Text(290, 230, "Time");
-		Text med1 = new Text(80, 90, "Medication");
-		Text med2 = new Text(330, 90, "Medication");
-		Text med3 = new Text(80, 230, "Medication");
-		Text med4 = new Text(330, 230, "Medication");
-		Text amount1 = new Text(160, 90, "Amount");
-		Text amount2 = new Text(410, 90, "Amount");
-		Text amount3= new Text(160, 230, "Amount");
-		Text amount4 = new Text(410, 230, "Amount");
-		ScrollPane panem = new ScrollPane(listm);
-		listm.setPrefSize(200, 40);
-		listm.setLayoutX(40);
-		listm.setLayoutY(125);
-		ScrollPane panea = new ScrollPane(lista);
-		lista.setPrefSize(200, 40);
-		lista.setLayoutX(290);
-		lista.setLayoutY(125);
-		ScrollPane panee = new ScrollPane(liste);
-		liste.setPrefSize(200, 40);
-		liste.setLayoutX(40);
-		liste.setLayoutY(265);
-		ScrollPane panen = new ScrollPane(listn);
-		listn.setPrefSize(200, 40);
-		listn.setLayoutX(290);
-		listn.setLayoutY(265);
-		CheckBox check1 = new CheckBox();
-		check1.setLayoutX(230);
-		check1.setLayoutY(90);
-		CheckBox check2 = new CheckBox();
-		check2.setLayoutX(480);
-		check2.setLayoutY(90);
-		CheckBox check3 = new CheckBox();
-		check3.setLayoutX(230);
-		check3.setLayoutY(230);
-		CheckBox check4 = new CheckBox();
-		check4.setLayoutX(480);
-		check4.setLayoutY(230);
-		rec.setFill(Color.ORANGERED);
-		root.getChildren().add(back);
-		root.getChildren().add(t);
-		root.getChildren().add(morning);
-		root.getChildren().add(afternoon);
-		root.getChildren().add(evening);
-		root.getChildren().add(night);
-		root.getChildren().add(time1);
-		root.getChildren().add(time2);
-		root.getChildren().add(time3);
-		root.getChildren().add(time4);
-		root.getChildren().add(med1);
-		root.getChildren().add(med2);
-		root.getChildren().add(med3);
-		root.getChildren().add(med4);
-		root.getChildren().add(amount1);
-		root.getChildren().add(amount2);
-		root.getChildren().add(amount3);
-		root.getChildren().add(amount4);
-		root.getChildren().add(check1);
-		root.getChildren().add(check2);
-		root.getChildren().add(check3);
-		root.getChildren().add(check4);
-		root.getChildren().add(listm);
-		root.getChildren().add(lista);
-		root.getChildren().add(liste);
-		root.getChildren().add(listn);
-		xStage.setScene(new Scene(root, 500, 350));
-		xStage.show();
-	}
-
 	public static void addMedPage(Stage xStage) {
 		Text t = new Text();
 		t.setLayoutX(180);
@@ -386,7 +255,7 @@ public class GUI {
 		TextField times = new TextField();
 		times.setLayoutX(300);
 		times.setLayoutY(200);
-		times.setText("Number of times per day");
+		times.setText("Enter the time setting");
 		TextField dates = new TextField();
 		dates.setLayoutX(300);
 		dates.setLayoutY(240);
@@ -518,7 +387,7 @@ public class GUI {
 		TextField times = new TextField();
 		times.setLayoutX(300);
 		times.setLayoutY(200);
-		times.setText("Number of times per day");
+		times.setText("Enter the time setting");
 		TextField dates = new TextField();
 		dates.setLayoutX(300);
 		dates.setLayoutY(240);
@@ -630,7 +499,7 @@ public class GUI {
 		t.setLayoutX(180);
 		t.setLayoutY(45);
 		t.setFont(new Font(20));
-		t.setText("Add Readomg");
+		t.setText("Add Reading");
 		TextField field = new TextField();
 		field.setLayoutX(20);
 		field.setLayoutY(150);
@@ -650,7 +519,7 @@ public class GUI {
 		TextField times = new TextField();
 		times.setLayoutX(300);
 		times.setLayoutY(200);
-		times.setText("Number of times per day");
+		times.setText("Enter the time setting");
 		TextField dates = new TextField();
 		dates.setLayoutX(300);
 		dates.setLayoutY(240);
@@ -782,7 +651,7 @@ public class GUI {
 		TextField times = new TextField();
 		times.setLayoutX(300);
 		times.setLayoutY(200);
-		times.setText("Number of times per day");
+		times.setText("Enter the time setting");
 		TextField dates = new TextField();
 		dates.setLayoutX(300);
 		dates.setLayoutY(240);
