@@ -331,7 +331,7 @@ public class GUI {
 			}
 		});
 		Button other = new Button();
-		other.setText("Exercise");
+		other.setText("Other");
 		other.setLayoutX(360);
 		other.setLayoutY(80);
 		other.setPrefWidth(110);
@@ -463,7 +463,7 @@ public class GUI {
 			}
 		});
 		Button other = new Button();
-		other.setText("Exercise");
+		other.setText("Other");
 		other.setLayoutX(360);
 		other.setLayoutY(80);
 		other.setPrefWidth(110);
@@ -595,7 +595,7 @@ public class GUI {
 		reading.setLayoutY(80);
 		reading.setPrefWidth(110);
 		Button other = new Button();
-		other.setText("Exercise");
+		other.setText("Other");
 		other.setLayoutX(360);
 		other.setLayoutY(80);
 		other.setPrefWidth(110);
@@ -733,7 +733,7 @@ public class GUI {
 			}
 		});
 		Button other = new Button();
-		other.setText("Exercise");
+		other.setText("Other");
 		other.setLayoutX(360);
 		other.setLayoutY(80);
 		other.setPrefWidth(110);
